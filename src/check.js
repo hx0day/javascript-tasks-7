@@ -2,7 +2,7 @@
 
 exports.init = function () {
     Object.prototype.checkContainsKeys = function (keys) {
-        if (!(typeof this === typeof Object() || typeof this === typeof Array())) {
+        if (!(this.constructor === Object || this.constructor === Array)) {
             throw new TypeError('error type');
         }
         var result = true;
@@ -11,11 +11,11 @@ exports.init = function () {
                 result = false;
             }
         }, this);
-        return true;
+        return result;
     };
 
     Object.prototype.checkHasKeys = function (keys) {
-        if (!(typeof this === typeof Object() || typeof this === typeof Array())) {
+        if (!(this.constructor === Object || this.constructor === Array)) {
             throw new TypeError('error type');
         }
         var thisKey = Object.keys(this);
@@ -26,15 +26,15 @@ exports.init = function () {
     };
 
     Object.prototype.checkContainsValues = function (values) {
-        if (!(typeof this === typeof Object() || typeof this === typeof Array())) {
+        if (!(this.constructor === Object || this.constructor === Array)) {
             throw new TypeError('error type');
         }
-        var thisValue = Object.keys(this).map(function (key) {
+        var value_from_object = Object.keys(this).map(function (key) {
             return this[key];
         }, this);
         var result = true;
         values.forEach(function (value) {
-            if (thisValue.indexOf(value) === -1) {
+            if (value_from_object.indexOf(value) === -1) {
                 result = false;
             }
         });
@@ -42,27 +42,27 @@ exports.init = function () {
     };
 
     Object.prototype.checkHasValues = function (values) {
-        if (!(typeof this === typeof Object() || typeof this === typeof Array())) {
+        if (!(this.constructor === Object || this.constructor === Array)) {
             throw new TypeError('error type');
         }
-        var thisValue = Object.keys(this).map(function (key) {
+        var value_from_object = Object.keys(this).map(function (key) {
             return this[key];
         }, this);
         var result = values.filter(function (value) {
-            return (thisValue.indexOf(value) > -1);
+            return (value_from_object.indexOf(value) > -1);
         });
-        return result === key.length;
+        return result.length === values.length;
     };
 
     Object.prototype.checkHasValueType = function (key, type) {
-        if (!(typeof this === typeof Object() || typeof this === typeof Array())) {
+        if (!(this.constructor === Object || this.constructor === Array)) {
             throw new TypeError('error type');
         }
         return typeof this[key] === typeof type();
     };
 
     Object.prototype.checkHasLength = function (length) {
-        if (!(typeof this === typeof String() || typeof this === typeof Array())) {
+        if (!(this.constructor === String || this.constructor === Array)) {
             throw new TypeError('error type');
         }
         return this.length === length;
