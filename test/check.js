@@ -104,6 +104,23 @@ describe('Check', function () {
                 assert.ok(person.checkHasValues(['John', 20]));
             });
 
+            it('should check that target checkType object', function () {
+                assert.doesNotThrow(function () {
+                    person.checkType(Object);
+                });
+            });
+
+            it('should check that target checkType array', function () {
+                assert.doesNotThrow(function () {
+                    numbers.checkType(Array);
+                });
+            });
+
+            it('should check that target checkType with throws', function () {
+                assert.throws(function () {
+                    person.checkType(Array, String);
+                }, TypeError);
+            });
         });
     }
 });

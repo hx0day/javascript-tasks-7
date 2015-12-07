@@ -2,9 +2,7 @@
 
 exports.init = function () {
     Object.prototype.checkContainsKeys = function (keys) {
-        if (!(this.constructor === Object || this.constructor === Array)) {
-            throw new TypeError('error type');
-        }
+        this.checkType(Object, Array);
         var result = true;
         keys.forEach(function (key) {
             if (!this.hasOwnProperty(key)) {
@@ -15,9 +13,7 @@ exports.init = function () {
     };
 
     Object.prototype.checkHasKeys = function (keys) {
-        if (!(this.constructor === Object || this.constructor === Array)) {
-            throw new TypeError('error type');
-        }
+        this.checkType(Object, Array);
         var thisKey = Object.keys(this);
         var result = thisKey.filter(function (key) {
             return (keys.indexOf(key) > -1);
@@ -26,9 +22,7 @@ exports.init = function () {
     };
 
     Object.prototype.checkContainsValues = function (values) {
-        if (!(this.constructor === Object || this.constructor === Array)) {
-            throw new TypeError('error type');
-        }
+        this.checkType(Object, Array);
         var value_from_object = Object.keys(this).map(function (key) {
             return this[key];
         }, this);
@@ -42,9 +36,7 @@ exports.init = function () {
     };
 
     Object.prototype.checkHasValues = function (values) {
-        if (!(this.constructor === Object || this.constructor === Array)) {
-            throw new TypeError('error type');
-        }
+        this.checkType(Object, Array);
         var value_from_object = Object.keys(this).map(function (key) {
             return this[key];
         }, this);
@@ -55,16 +47,12 @@ exports.init = function () {
     };
 
     Object.prototype.checkHasValueType = function (key, type) {
-        if (!(this.constructor === Object || this.constructor === Array)) {
-            throw new TypeError('error type');
-        }
+        this.checkType(Object, Array);
         return typeof this[key] === typeof type();
     };
 
     Object.prototype.checkHasLength = function (length) {
-        if (!(this.constructor === String || this.constructor === Array)) {
-            throw new TypeError('error type');
-        }
+        this.checkType(String, Array);
         return this.length === length;
     };
 
@@ -74,5 +62,18 @@ exports.init = function () {
 
     String.prototype.checkHasWordsCount = function (count) {
         return this.split(' ').checkHasLength(count);
+    };
+
+    Object.prototype.checkType = function () {
+        var result = [];
+        var args = Array.prototype.slice.call(arguments);
+        args.forEach(function (argument) {
+            if (this.constructor === argument) {
+                result.push(true);
+            }
+        }, this);
+        if (!result.length) {
+            throw new TypeError('error type');
+        }
     };
 };
