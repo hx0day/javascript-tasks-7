@@ -54,15 +54,30 @@ describe('Check', function () {
             });
 
             it('should check that target checkContainsKeys  not key', function () {
+                assert.ok(person.checkContainsKeys(['name']));
+            });
+
+            it('should check that target checkContainsKeys  not key nickname', function () {
                 assert.strictEqual(person.checkContainsKeys(['nickname']), false);
+            });
+
+            it('should check that target checkContainsKeys  not key nickname 2', function () {
+                assert.strictEqual(person.checkContainsKeys(['name', 'age', 'nickname']), false);
             });
 
             it('should check that target hasKeys', function () {
                 assert.ok(person.checkHasKeys(['name', 'age']));
             });
 
+            it('should check that target hasKeys key name', function () {
+                assert.strictEqual(person.checkHasKeys(['name']), false);
+            });
             it('should check that target hasKeys not key', function () {
                 assert.strictEqual(person.checkHasKeys(['nickname']), false);
+            });
+
+            it('should check that target hasKeys not key nickname', function () {
+                assert.strictEqual(person.checkHasKeys(['name', 'age', 'nickname']), false);
             });
 
             it('should check that target hasValueType', function () {
@@ -100,8 +115,16 @@ describe('Check', function () {
             });
 
 
-            it('should check that target checkHasValues object', function () {
+            it('should check that target checkHasValues object John, 20', function () {
                 assert.ok(person.checkHasValues(['John', 20]));
+            });
+
+            it('should check that target checkHasValues object John', function () {
+                assert.strictEqual(person.checkHasValues(['John']), false);
+            });
+
+            it('should check that target checkHasValues object John, 20, nickname', function () {
+                assert.strictEqual(person.checkHasValues(['John', 20, 'nickname']), false);
             });
 
             it('should check that target checkType object', function () {

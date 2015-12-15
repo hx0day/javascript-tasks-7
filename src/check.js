@@ -1,6 +1,7 @@
 'use strict';
 
 exports.init = function () {
+    //Проверяет, что цель содержит указанные ключи.
     Object.prototype.checkContainsKeys = function (keys) {
         this.checkType(Object, Array);
         var result = true;
@@ -11,39 +12,44 @@ exports.init = function () {
         }, this);
         return result;
     };
-
+    //Проверяет, что цель содержит только указанные ключи.
     Object.prototype.checkHasKeys = function (keys) {
         this.checkType(Object, Array);
         var thisKey = Object.keys(this);
         var result = thisKey.filter(function (key) {
             return (keys.indexOf(key) > -1);
         });
-        return keys.length === result.length;
+        result = thisKey.length === result.length && thisKey.length === keys.length;
+        return result;
     };
 
     Object.prototype.checkContainsValues = function (values) {
         this.checkType(Object, Array);
-        var value_from_object = Object.keys(this).map(function (key) {
+        var val_from_object = Object.keys(this).map(function (key) {
             return this[key];
         }, this);
         var result = true;
         values.forEach(function (value) {
-            if (value_from_object.indexOf(value) === -1) {
+            if (val_from_object.indexOf(value) === -1) {
                 result = false;
             }
         });
         return result;
     };
 
+    //Проверяет, что цель содержит только указанные значения.
     Object.prototype.checkHasValues = function (values) {
         this.checkType(Object, Array);
-        var value_from_object = Object.keys(this).map(function (key) {
+        var val_from_object = Object.keys(this).map(function (key) {
             return this[key];
         }, this);
-        var result = values.filter(function (value) {
-            return (value_from_object.indexOf(value) > -1);
+        var values_result = values.filter(function (value) {
+            return (val_from_object.indexOf(value) > -1);
         });
-        return result.length === values.length;
+
+        var result = val_from_object.length === values_result.length;
+        result = result && val_from_object.length === values.length;
+        return result;
     };
 
     Object.prototype.checkHasValueType = function (key, type) {
